@@ -1,12 +1,15 @@
 import { ModelFusionTextStream } from "@modelfusion/vercel-ai";
 import { CoreMessage, StreamingTextResponse, streamText } from "ai";
-import { ollama } from "ollama-ai-provider";
+import { createOllama } from "ollama-ai-provider";
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
   // useChat will send a JSON with a messages property:
   const { messages }: { messages: CoreMessage[] } = await req.json();
+  const ollama = createOllama({
+    baseURL: process.env.OLLAMA_BASEURL,
+  });
 
   const result = await streamText({
     messages,
