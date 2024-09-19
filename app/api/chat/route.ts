@@ -1,5 +1,5 @@
 import { ModelFusionTextStream } from "@modelfusion/vercel-ai";
-import { CoreMessage, StreamingTextResponse, streamText } from "ai";
+import { CoreMessage, streamText } from "ai";
 import { createOllama } from "ollama-ai-provider";
 
 export const runtime = "edge";
@@ -18,8 +18,8 @@ export async function POST(req: Request) {
   });
 
   // Return the result using the Vercel AI SDK:
-  return new StreamingTextResponse(
-    // Convert the text stream to a Vercel AI SDK compatible stream:
+  // Convert the text stream to a Vercel AI SDK compatible stream:
+  const response = new Response(
     ModelFusionTextStream(
       result.textStream,
       // optional callbacks:
@@ -37,6 +37,12 @@ export async function POST(req: Request) {
           console.log("onFinal", completion);
         },
       }
-    )
+    ),
+    {
+      status: 200,
+    }
   );
+  response.headers.set("Content-Type", "text/plain; charset=utf-8");
+
+  return response;
 }
