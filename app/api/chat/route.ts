@@ -1,30 +1,24 @@
-import { asChatMessages, ModelFusionTextStream } from "@modelfusion/vercel-ai";
-import { Message, StreamingTextResponse } from "ai";
-import { ollama, streamText } from "modelfusion";
+import { ModelFusionTextStream } from "@modelfusion/vercel-ai";
+import { CoreMessage, StreamingTextResponse, streamText } from "ai";
+import { ollama } from "ollama-ai-provider";
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
   // useChat will send a JSON with a messages property:
-  const { messages }: { messages: Message[] } = await req.json();
+  const { messages }: { messages: CoreMessage[] } = await req.json();
 
-  const textStream = await streamText({
-    model: ollama.ChatTextGenerator({ model: "llama3.1" }).withChatPrompt(),
-    prompt: {
-      system:
-        "You are an AI chat bot. " +
-        "Follow the user's instructions carefully.",
-
-      // map Vercel AI SDK Message to ModelFusion ChatMessage:
-      messages: asChatMessages(messages),
-    },
+  const result = await streamText({
+    messages,
+    model: ollama("llama3.1"),
+    system: `You are a helpful, respectful and honest assistant.`,
   });
 
   // Return the result using the Vercel AI SDK:
   return new StreamingTextResponse(
     // Convert the text stream to a Vercel AI SDK compatible stream:
     ModelFusionTextStream(
-      textStream,
+      result.textStream,
       // optional callbacks:
       {
         onStart() {
