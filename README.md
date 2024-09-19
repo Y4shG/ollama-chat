@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ollama Chat App
+
+This is a simple chat application built with [Next.js](https://nextjs.org/) and [Ngrok](https://ngrok.com/) to enable secure tunneling for local development. This app uses Ollama AI for real-time chat communication.
+
+## Features
+
+- Real-time chat interface
+- Easy deployment with Next.js
+- Secure tunnel for local development using Ngrok
+- Integrated with Ollama API for intelligent chat responses
+
+## Requirements
+
+- Node.js (v14 or later)
+- Ngrok (optional)
+- Ollama [llama3.1](https://ollama.com/library/llama3.1)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Clone the Repository
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```
+git clone https://github.com/heinhtoo/ollama-chat.git
+cd ollama-chat
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Install Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Before running the app, make sure to install the necessary packages:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+npm install
+```
 
-## Learn More
+### 3. Set Up Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Create a .env.local file at the root of the project to configure your Ollama public api url
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+OLLAMA_BASEURL="http://localhost:11434/api"
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 4. Test the Application
 
-## Deploy on Vercel
+Now you can start the development server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+npm run dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 5. Deploy the App (Optional)
+
+Once development is complete, you can deploy your Next.js app to Vercel or any other preferred hosting service.
+
+#### 5.1 Setting up Ngrok
+
+To create a secure tunnel for local ollama model, run Ngrok on port 11434:
+
+```
+ngrok http 11434 --host-header="localhost:11434"
+```
+
+### 5.2 Overwrite the environment variable
+
+Copy the forwarding URL provided by Ngrok and update environment variables in your production server
+
+---
+
+### Additional Resources
+
+- Blog Post: [Deploy ollama chat app on Vercel](https://medium.com/@heinhtoo/deploy-ollama-chat-app-on-vercel-0e4850838ed2)
