@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
   const result = await streamText({
     messages,
-    model: ollama("llama3.1"),
+    model: ollama("llama3.2:1b"),
     system: `You are a helpful, respectful and honest assistant.`,
   });
 
